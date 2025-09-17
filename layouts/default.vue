@@ -6,3 +6,9 @@
         </main>
     </div>
 </template>
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
