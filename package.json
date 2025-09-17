@@ -11,10 +11,15 @@
   },
   "dependencies": {
     "@picocss/pico": "^2.1.1",
+    "@libsql/client": "^0.15.4",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.44.5",
+    "drizzle-zod": "^0.8.3",
     "nuxt": "^4.1.2",
     "sass": "^1.92.1",
     "vue": "^3.5.21",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@types/node": "^24.5.1"
