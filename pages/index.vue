@@ -1,4 +1,4 @@
-<script class="ts" setup>
+<script lang="ts" setup>
 const { data: tasks, error, status } = await useFetch('/api/tasks', { lazy: true });
 </script>
 
