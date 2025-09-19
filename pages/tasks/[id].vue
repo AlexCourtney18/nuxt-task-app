@@ -1,3 +1,17 @@
+<script lang="ts" setup>
+const route = useRoute();
+ const { data: task, error, status } = await useFetch(`/api/tasks/${route.params.id}`, { lazy: true });
+</script>
+
+
 <template>
-    <h1>The single task page!</h1>
+    <div>
+        <article v-if='status === "pending"' aria-busy="true" />
+        <article v-else-if="error" class="error">
+            {{ error.statusMessage }}
+        </article>
+        <div v-else-if="task">
+            {{ task.title }}
+        </div>
+    </div>
 </template>
