@@ -1,15 +1,14 @@
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import db from "~/lib/db";
-import { tasks } from "~/lib/db/schema";
+import { tasks, PatchTasksSchema } from "~/lib/db/schema";
 
 const IdParamsSchema = z.object({
     id: z.coerce.number()
-})
+});
 
 export default defineEventHandler(async (event) => {
     const result = await getValidatedRouterParams(event, IdParamsSchema.safeParse);
-
     if (!result.success) {
         return sendError(event, createError({
             statusCode: 422,
@@ -17,16 +16,18 @@ export default defineEventHandler(async (event) => {
         }));
     }
 
-    const task = await db.query.tasks.findFirst({
-        where: eq(tasks.id, result.data.id)
-    })
-
-    if (!task) {
+    const body = await readBody(event);
+    const patch = PatchTasksSchema.safeParse(body);
+    if (!patch.success) {
         return sendError(event, createError({
-            statusCode: 404,
-            statusMessage: "Task not found",
+            statusCode: 400,
+            statusMessage: "Invalid body",
         }));
     }
 
-    return task;
+    const updated = await db.update(tasks)
+        .set(patch.data)
+        .where(eq(tasks.id, result.data.id));
+
+    return updated;
 });
